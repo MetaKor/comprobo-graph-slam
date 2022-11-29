@@ -1,5 +1,3 @@
-import numpy as np
-import cv2 as cv
 from sklearn.cluster import KMeans
 from collections import Counter
 
@@ -9,18 +7,14 @@ from collections import Counter
 class objectdetect():
 
 
-    def __init__(self, image):
+    def __init__(self, image, diameter):
         # feed in the training image of the object to track, already read
         # by opencv when fed into objectdetect
         self.image = image
         # create a placeholder for the primary color of the object
         self.primary_color = None
         # create a placeholder for the corners of the object
-        self.corners = None
-        # create a placeholder for the descriptors of an object
-        self.descriptors = None
-        # create a placeholder for the center point coordinates of the object
-        self.centroid = None
+        self.diameter = diameter
 
     def find_color(self):
         # convert the image to a data matrix pixels * RGB
@@ -38,10 +32,3 @@ class objectdetect():
         dominant_color = clusters.cluster_centers_[label_count(1)[0][0]]
 
         self.primary_color = dominant_color
-
-    def find_corners(self):
-        pass
-    def find_descriptors(self):
-        pass
-    def find_centroid(self):
-        pass
