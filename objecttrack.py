@@ -15,21 +15,23 @@ import re
 
 
 class objecttrack():
-    def __init__(self):
+    def __init__(self, folder_name):
         # create a placeholder to store the tracking objects
         self.objects = None
+        # store the name of the folder where the object images are stored
+        self.folder_name = folder_name
 
-    def load_objects(self, folder_name):
+    def load_objects(self):
 
         # find the current working directory
-        path = os.getcwd() + "/" + folder_name
+        path = os.getcwd() + "/" + self.folder_name
 
         object_list = []
 
         for objects in os.listdir(path):
 
             # the diameter of the image needs to be in the file name ex. greenball_5
-            diameter = re.search("(?<=_).+", objects)
+            diameter = re.findall("(?<=_).+(?=\.)", objects)[0]
 
             # attempt to convert the number
             try:
@@ -55,3 +57,9 @@ class objecttrack():
         self.objects = object_list
 
 
+test = objecttrack("trackingobjects")
+
+test.load_objects()
+
+print(test.objects[0].name)
+print(test.objects[0].primary_color)
