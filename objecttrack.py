@@ -3,6 +3,10 @@ import cv2 as cv
 from sklearn.cluster import KMeans
 from collections import Counter
 from objectclass import objectdetect
+import os
+from os import listdir
+import inspect, os.path
+import re
 
 #TODO - Load all objects from folder
 # Initialize primary color of each object
@@ -12,22 +16,42 @@ from objectclass import objectdetect
 
 class objecttrack():
     def __init__(self):
-        # create a placeholder for each object instance, file name, and diameter
-        self.obj1 = None
-        self.dia1 = None
-        self.name1 = None
-        self.obj2 = None
-        self.dia2 = None
-        self.name2 = None
-        self.obj3 = None
-        self.dia3 = None
-        self.name3 = None
-        self.obj4 = None
-        self.dia4 = None
-        self.name4 = None
-        self.obj5 = None
-        self.dia5 = None
-        self.name5 = None
+        # create a placeholder to store the tracking objects
+        self.objects = None
 
-    def load_images(self):
-        pass
+    def load_objects(self, folder_name):
+
+        # find the current working directory
+        path = os.getcwd() + "/" + folder_name
+
+        object_list = []
+
+        for objects in os.listdir(path):
+
+            # the diameter of the image needs to be in the file name ex. greenball_5
+            diameter = re.search("(?<=_).+", objects)
+
+            # attempt to convert the number
+            try:
+                diameter = float(diameter)
+            except NameError:
+                print("Object Image Name has no Diameter ending, proper ex. greenball_5")
+
+            # load the image
+            img = cv.imread(path + "/" + objects)
+
+            # create an instance of the image
+            landmark = objectdetect(img,diameter,objects)
+
+            # find the primary color of the object
+            landmark.find_color()
+
+            # create the object class and append it to the list
+            object_list.append(landmark)
+
+
+
+        # Move the objects to a global placeholder
+        self.objects = object_list
+
+

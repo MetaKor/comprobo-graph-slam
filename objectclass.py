@@ -7,7 +7,7 @@ from collections import Counter
 class objectdetect():
 
 
-    def __init__(self, image, diameter):
+    def __init__(self, image, diameter, name):
         # feed in the training image of the object to track, already read
         # by opencv when fed into objectdetect
         self.image = image
@@ -15,6 +15,8 @@ class objectdetect():
         self.primary_color = None
         # create a placeholder for the corners of the object
         self.diameter = diameter
+        # create a placeholder for the name of the object
+        self.name = name
 
     def find_color(self):
         # convert the image to a data matrix pixels * RGB
