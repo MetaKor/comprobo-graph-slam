@@ -62,10 +62,11 @@ class objecttrack():
         image = cv.medianBlur(image, 5)
 
         # find all of the circles in the image frame
-        circles = cv.HoughCircles(image, cv.HOUGH_GRADIENT, 1, 20)
+        circles = cv.HoughCircles(image, cv.HOUGH_GRADIENT, dp=1, minDist=100, param1=150, param2=40)
 
         # circles is a list of circle objects, do not return if it is none
         if circles is not None:
+            print(circles[0][0][2])
             return circles[0]
 
     def matchobjects(self, image, circles, tolerance):
@@ -93,6 +94,20 @@ class objecttrack():
                 else:
                     print(f"Matched object {obj.name}")
 
+    def finddistance(self, pixel_width, width, focal_len):
+        # finds the distance to an object in the cameras frame
+        distance = (focal_len*width)/pixel_width
+
+        return distance
+
+    def tunecamera(self, k = None):
+        # allow the user to enter the k camera tuning list
+        # if they do not have it then initiate tuning code
+
+        if k is None:
+            pass
+        else:
+            return k
 
 
 if __name__ == '__main__':
@@ -122,24 +137,22 @@ if __name__ == '__main__':
         circles = tracker.findcircles(grey_image)
 
         if circles is not None and len(circles) > 0:
-            print("circle found!")
             # match the circles to objects
             tracker.matchobjects(live_image, circles, 5)
 
-        if circles is not None:
             circles = np.uint16(np.around(circles))
             for i in circles:
                 # draw the outer circle
-                cv.circle(grey_image,(i[0],i[1]),i[2],(0,255,0),2)
+                cv.circle(frame,(i[0],i[1]),i[2],(0,255,0),2)
                 # draw the center of the circle
-                cv.circle(grey_image,(i[0],i[1]),2,(0,0,255),3)
+                cv.circle(frame,(i[0],i[1]),2,(0,0,255),3)
 
         # set the dimensions of the video frame
         frame = np.array(cv.resize(frame,
                                     (frame.shape[1]//1,
                                      frame.shape[0]//1)))
-        test = cv.medianBlur(grey_image, 5)
-        cv.imshow('Video Feed', test)
+
+        cv.imshow('Video Feed', frame)
         # if the user presses esc, terminate the process
         cv.waitKey(27)
     cv.destroyAllWindows()
