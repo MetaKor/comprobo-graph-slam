@@ -57,14 +57,16 @@ class objecttrack():
         self.objects = object_list
 
     def findcircles(self, image):
+
         # Apply a median blur to the image to reduce noise
         image = cv.medianBlur(image, 5)
 
         # find all of the circles in the image frame
         circles = cv.HoughCircles(image, cv.HOUGH_GRADIENT, 1, 20)
 
-        # circles is a list of circle objects
-        return circles
+        # circles is a list of circle objects, do not return if it is none
+        if circles is not None:
+            return circles[0]
 
     def matchobjects(self, image, circles, tolerance):
         # identify if any of the circles are a known object in the user defined folder
@@ -72,7 +74,8 @@ class objecttrack():
         for circle in circles:
             # find if the center color of the circle matches any of the colors
             # note that images are [y,x,c] format
-            circle_color = image[circle[1], circle[0]]
+
+            circle_color = image[int(circle[1]), int(circle[0])]
 
             # now assess if this color is within the tolerance range of any of the object colors
             for obj in self.objects:
@@ -123,12 +126,20 @@ if __name__ == '__main__':
             # match the circles to objects
             tracker.matchobjects(live_image, circles, 5)
 
+        if circles is not None:
+            circles = np.uint16(np.around(circles))
+            for i in circles:
+                # draw the outer circle
+                cv.circle(grey_image,(i[0],i[1]),i[2],(0,255,0),2)
+                # draw the center of the circle
+                cv.circle(grey_image,(i[0],i[1]),2,(0,0,255),3)
 
         # set the dimensions of the video frame
         frame = np.array(cv.resize(frame,
                                     (frame.shape[1]//1,
                                      frame.shape[0]//1)))
-        cv.imshow('Video Feed', frame)
+        test = cv.medianBlur(grey_image, 5)
+        cv.imshow('Video Feed', test)
         # if the user presses esc, terminate the process
         cv.waitKey(27)
     cv.destroyAllWindows()
