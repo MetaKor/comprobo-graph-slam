@@ -5,7 +5,18 @@ from scipy import stats as st
 # class for managing visual objects to track
 
 class objectdetect():
+    """
+    Class intended for the easy creation, categorization,
+    and storage of objects chosen by the user. Intended
+    to work in concert with the objecttrack class.
 
+    Args:
+        image: opencv image object
+        diameter: the diameter of the object in meters
+        name: the desired string that represents the object's name
+
+    Returns:
+    """
 
     def __init__(self, image, diameter, name):
         # feed in the training image of the object to track, already read
@@ -20,6 +31,15 @@ class objectdetect():
         self.name = name
 
     def find_color(self):
+        """
+        Finds the primary color of an object based on
+        Kmean clustering.
+
+        Args:
+
+        Returns:
+        """
+
         # convert the image to a data matrix pixels * HSV
         image_matrix = self.image.reshape(self.image.shape[0]*self.image.shape[1], 3)
 
