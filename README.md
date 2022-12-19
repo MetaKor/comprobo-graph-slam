@@ -95,7 +95,7 @@ These are all issues that, given more time, we would be able to solve or work ar
 
 ## Takeaways
 
--It is important to map out at the beginning of the project how much of a program should be made up of separate nodes versus threads.
--Camera based processing and recognition techniques are heavily dependent on background lighting and color.
--It is important to use standardized ways to store and categorize data to ease scaling.
+- It is important to map out at the beginning of the project how much of a program should be made up of separate nodes versus threads.
+- Camera based processing and recognition techniques are heavily dependent on background lighting and color.
+- It is important to use standardized ways to store and categorize data to ease scaling.
 
