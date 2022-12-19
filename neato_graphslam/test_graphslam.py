@@ -40,7 +40,7 @@ def main():
                                      PoseSE2(np.random.normal(scale=0.05, size=2), np.random.normal(scale=0.02)), #estimate
                                  [vertices[i], vertices[i+1]]) \
                   for i in range( n_poses-1 ) ]
-    
+
     # Landmark edge information matrices have a zero on 3rd diagonal element
     # to signify that orientation/angle of landmarks is irrelevant
     landmark_edges = [ EdgeOdometry( [n_poses, i],

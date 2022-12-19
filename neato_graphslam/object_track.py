@@ -23,7 +23,6 @@ class objecttrack(Node):
     Neato line of robots.
 
     Args:
-        Node: Ros object that makes this class a Node
 
     Returns:
     """
