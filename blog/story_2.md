@@ -31,7 +31,9 @@ However, this architecture did present one slight caveat in our specific case. T
 
 Fortunately this is not too tricky to overcome. We simply consider the measurements to be embedded in the $SE(2)$ (that is, simply set the landmark orientations to 0) and then be careful to assign an appropriate information matrix to these edges. By setting the third diagonal entry of the information matrix to 0 for these edges, the error calculation will not include any contribution from a difference in orientation and thus landmark orientation is not considered as desired.
 
-$$\mathbf{\Omega}_{obs} = \begin{bmatrix}k_{tran} & 0 & 0 \\ 0 & k_{tran} & 0 \\ 0 & 0 & 0\end{bmatrix} \ \ \Rightarrow \ \ \mathbf{e}^T \mathbf{\Omega}_{obs} \mathbf{e} = k_{tran}(\Delta x) + k_{tran}(\Delta y) + \mathbf{0}(\Delta \theta)$$
+```math
+\mathbf{\Omega}_{obs} = \begin{bmatrix}k_{tran} & 0 & 0 \\ 0 & k_{tran} & 0 \\ 0 & 0 & 0\end{bmatrix} \ \ \Rightarrow \ \ \mathbf{e}^T \mathbf{\Omega}_{obs} \mathbf{e} = k_{tran}(\Delta x) + k_{tran}(\Delta y) + \mathbf{0}(\Delta \theta)
+```
 
 Exploring these sorts of details in `python-graphslam` library was thus an immensely educational experience for us as budding representers of robotics algorithm in code with well-designed data structures!
 
