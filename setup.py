@@ -20,7 +20,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'slam_collect_data = neato_graphslam.slam_collect_data:main'
+            'slam_collect_data = neato_graphslam.slam_collect_data:main',
+            'objecttrack = neato_graphslam.objecttrack:main'
         ],
     },
 )

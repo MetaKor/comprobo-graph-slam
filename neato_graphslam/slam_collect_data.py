@@ -10,8 +10,10 @@ import numpy as np
 
 
 class GraphSlam(Node):
-    """ A class representing a ROS node that accumulates odometry and
-        visual landmark data into a graphSLAM graph.
+    """
+    A class representing a ROS node that accumulates odometry and
+    visual landmark data into a graphSLAM graph.
+
         Attributes:
             TODO
     """
