@@ -87,7 +87,7 @@ We now have a twofold goal: We want a way to encode a representation of uncertai
 \begin{bmatrix}\Delta x \\ \Delta y \\ \Delta \theta \end{bmatrix}
 ```
 ```math
-= k_{tran} (\Delta x)^2 + k_{tran} (\Delta x)^2 + k_{tran} (\Delta x)^2
+= k_{tran} (\Delta x)^2 + k_{tran} (\Delta y)^2 + k_{rot} (\Delta \theta)^2
 ```
 This results in a sum of the squares of the various components of the error. The above example shows a diagonal information matrix with the same weight on both translational components, which makes sense because our confidence in $x$ measurements is probably the same as in $y$ measurements. We also avoid off-diagonal elements, which seems like a good thing to do when getting started because these would denote unintuitive correlations between the various measured parameters that we aren't prepared to justify.
 
@@ -96,7 +96,7 @@ We now have our tool for representing a different degree of uncertainty in, say,
 At last, we have formalized our nonlinear optimization problem: we want to minimize the sum of all these $\mathbf{f}_{ij}$ by adjusting the poses of our vertices such that, ideally, all the measurement edges reach the best compromise possible. We have then arrived at our optimal trajectory and map as encoded in the configuration of nodes $\mathbf{x^*}$:
 
 $$
-\mathbf{x^*} = \argmin_{\mathbf{x}} \left[ \sum \mathbf{f}_{ij} \right]
+\mathbf{x^*} = \text{argmin}_{\mathbf{x}} \left[ \sum \mathbf{f}_{ij} \right]
 $$
 
 ### Optimizing the graph
