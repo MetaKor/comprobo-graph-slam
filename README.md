@@ -46,7 +46,7 @@ Nodes in GraphSLAM come in two types:
 - **Landmarks**, denoted $\mathbf{z}_i$. These represent the pose of landmarks that we have identified using our sensors. Depending on the application and choice of sensor, these could come in many flavors themselves.
 
 Edges then naturally denote the relationships between these nodes as sensed by the robot.
-- **Odometry edges** or **“motion links”** encode the spatial relationship between subsequent poses as measured by the robot’s odometry. They thus link consecutive poses $\mathbf{x}_i$ and $\mathbf{x}_{i+1}$.
+- **Odometry edges** or **“motion links”** encode the spatial relationship between subsequent poses as measured by the robot’s odometry. They thus link consecutive poses $\mathbf{x}_i$ and $\mathbf{x}_{i+1}$ .
 - **Observation edges** encode the spatial relationship between a landmark and the pose the robot was in when it made the measurement. They thus link a pose $\mathbf{x}_i$ to a concurrent measurement $\mathbf{z}_j$.
 
 ### Intuition for graph optimization
@@ -59,7 +59,7 @@ This is precisely the idea of the optimization underpinning GraphSLAM: that ever
 
 Now that we have categorized our edges which comprise the constraints of our graph optimization, we need to think about the details of how we will represent these constraints, as this has important implications on the optimization step. There are two major paradigms for this representation in the literature, what we will label “heterogeneous” and “homogeneous.”
 
-Some implementations of GraphSLAM make a very clear distinction between the different types of nodes and edges discussed above, and are thus “heterogeneous.” This distinction can be useful because it actually lets us eliminate all landmark nodes by representing landmark measurements as “virtual odometry measurements.” The idea here is that the two measurement links from a pair of poses ($\mathbf{x}_i$ and $\mathbf{x}_j$ to a single landmark can be combined into an additional link between those poses ($\hat{\mathbf{z}}_{ij}$), thus bypassing the landmark. This reduces both dimensionality and sparseness of the graph’s adjacency matrix. However, it also means that optimizing the graph only results in an optimal trajectory, so constructing the optimal map requires a separate step. You can read more about this approach [at our first project blog post here](https://github.com/MetaKor/comprobo_graph_slam/blob/main/blog/story_1.md).
+Some implementations of GraphSLAM make a very clear distinction between the different types of nodes and edges discussed above, and are thus “heterogeneous.” This distinction can be useful because it actually lets us eliminate all landmark nodes by representing landmark measurements as “virtual odometry measurements.” The idea here is that the two measurement links from a pair of poses ( $\mathbf{x}_i$ and $\mathbf{x}_j$ to a single landmark can be combined into an additional link between those poses $(\hat{\mathbf{z}}_{ij})$ , thus bypassing the landmark. This reduces both dimensionality and sparseness of the graph’s adjacency matrix. However, it also means that optimizing the graph only results in an optimal trajectory, so constructing the optimal map requires a separate step. You can read more about this approach [at our first project blog post here](https://github.com/MetaKor/comprobo_graph_slam/blob/main/blog/story_1.md).
 
 However, we have relatively few distinct landmarks, so the sparsity in landmark observation addressed by the “heterogeneous” approach is largely irrelevant to our implementation. Additionally, we would like to optimize the full trajectory and map in a single pass. Thus, we chose to instead optimize over the full graph.
 
@@ -71,7 +71,7 @@ In the 2D case, if all vertices are in $SE(2)$ and are thus parametrized by two 
 \mathbf{z}_{ij} = \mathbf{x}_j - \mathbf{x}_i = \begin{bmatrix}x_j \\ y_j \\ \theta_j \end{bmatrix} - \begin{bmatrix}x_i \\ y_i \\ \theta_i \end{bmatrix} = \begin{bmatrix}\Delta x \\ \Delta y \\ \Delta \theta \end{bmatrix}
 ```
 
-We are ultimately interested in how well our measurements of how pairs of nodes "should" relate to one another (as encoded in our edges) agrees with the raw transformation between the poses of the vertices in the current configuration of the graph. Thus we must compute the error $\mathbf{e}_{ij}$ for every edge/measurement $\mathbf{z}_{ij} by taking the difference between the edge's transformation measurement and the current estimate encoded within the graph:
+We are ultimately interested in how well our measurements of how pairs of nodes "should" relate to one another (as encoded in our edges) agrees with the raw transformation between the poses of the vertices in the current configuration of the graph. Thus we must compute the error $\mathbf{e}_{ij}$ for every edge/measurement $\mathbf{z}_{ij}$ by taking the difference between the edge's transformation measurement and the current estimate encoded within the graph:
 
 ```math
 \mathbf{e}_{ij} = \mathbf{z}_{ij} - \left( \mathbf{x}_j - \mathbf{x}_i \right)
